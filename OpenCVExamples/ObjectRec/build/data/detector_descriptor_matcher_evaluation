@@ -1,0 +1,12 @@
+Bark: SURF_BF
+Bikes: ORBX_BF
+Boats: ORBX_BF
+Graf: ORBX_BF
+Leuven: ORB*
+Trees: ORBX_BF
+UBC: ORB*
+Wall: ORBX_BF
+
+ORBX_BF seems to be identical ORB_BF
+ORB3_BF seems to be identical ORB4_BF
+

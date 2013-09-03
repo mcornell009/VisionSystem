@@ -1,0 +1,86 @@
+Written by Christopher Funk;
+May 2012;
+
+Compiling Instructions:
+
+Abstract:
+Use cmake to setup the environment and then run make.
+	Can use GCC but it is harder to use with different versions of OpenCV and PCL since you would have to rewrite the package config files for each new version and is much less reliable
+	Can skip to last step if cmake has already been used for making the make file. 
+
+
+
+1.  Organizational Structure of program folder:
+
+  The code and CMakeLists is in the source folder and the program is within the build folder.  
+
+
+
+2.  CMakeList.txt discription 
+
+Below is an example that uses PCL and OpenCV libraries where the program is called "camcap_liveRectify".
+
+"""
+cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+
+project(camcap_liveRectify)
+
+find_package(PCL 1.5 REQUIRED)
+
+include_directories(${PCL_INCLUDE_DIRS})
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
+
+find_package(OpenCV REQUIRED)
+
+add_executable (camcap_liveRectify camcap_liveRectify.cpp)
+
+target_link_libraries (camcap_liveRectify ${PCL_LIBRARIES})
+target_link_libraries (camcap_liveRectify ${OpenCV_LIBS})
+"""
+
+A. You need to first say the minimum version of cmake or it will not work as shown in the line "cmake_minimum_required(VERSION 2.6 FATAL_ERROR)"
+B. Define the package name but that doesn't seem to have much effect for our small programs as shown in the line "project(camcap_liveRectify)"
+C. Find the packages you wish to link the libraries to.  PCL needs to be pointed at the two directories and the definitions but openCV has a file in the release folder that points it in the right direction so no need to specify.  This is shown in the lines below:
+"""
+find_package(PCL 1.5 REQUIRED)
+
+include_directories(${PCL_INCLUDE_DIRS})
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
+
+find_package(OpenCV REQUIRED)
+"""
+D. Define the executable (program) name and then which source that it comes from as shown in the line "add_executable (camcap_liveRectify camcap_liveRectify.cpp)"
+E. Finally you need to link the libraries to each individual program which uses those specific libraries as shown below. 
+"""
+target_link_libraries (camcap_liveRectify ${PCL_LIBRARIES})
+target_link_libraries (camcap_liveRectify ${OpenCV_LIBS})
+"""
+
+
+3.  Create the make file for the Code using CMake:
+
+A. Define the source and build folders in the cmake-gui and press "Configure".  
+B. If you haven't used cmake on the program before it should prompt you for the generator which should be on "Unix Makefiles".  If you have you might need to delete the cache.
+C. If you are using pcl there should be a prompt for errors, just press ok.  If your using just opencv, you still need to do this.
+	Go to the ungrouped entries in the Environmental Variables Text Window (the big text output with the drop down menus)
+	In there, go to the "Ungrouped Entries" and change the directories for OpenCV and PCL to their build folders.** 
+		For openCV the folder is "/home/robotlab/Desktop/old_dell_files/New_Sources/OpenCV-2.4.0/release"
+		For PCL the folder is "/home/robotlab/Desktop/old_dell_files/New_Sources/PCL-1.5.1/build"
+D. Press Configure until all the red values in the Environmental Variables Text Window is gone.
+E. Press Generate
+
+
+4.  Compiling the Code using make
+
+A. Go to the build folder using the cd command in a terminal.  
+B. Use the command "make" which has no parameters.  If you are compiling more then one program you might want to do a "make clean && make" command
+
+5.  Running the code
+
+For most code I build I try to avoid using parameters but check the program discription in the readme file to be sure.  Usually, all you have to do in termial is just type in "./program_name" or for the example above "./camcap_liveRectify" 
+
+
+** These are the library versions I am using as of May 2012 though all you have to do is point the compiler at the build folder of the library.
+

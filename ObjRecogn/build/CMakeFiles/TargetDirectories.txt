@@ -1,0 +1,2 @@
+/home/robotlab/vision_system/ObjRecogn/build/CMakeFiles/ObjRec.dir
+/home/robotlab/vision_system/ObjRecogn/build/CMakeFiles/ObjRecClass.dir

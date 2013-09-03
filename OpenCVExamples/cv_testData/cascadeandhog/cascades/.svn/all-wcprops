@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/cascadeandhog/cascades
+END
+haarcascade_3.xml
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/cascadeandhog/cascades/haarcascade_3.xml
+END
+haarcascade_frontalface_alt.xml
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/cascadeandhog/cascades/haarcascade_frontalface_alt.xml
+END
+haarcascade_frontalface_alt2.xml
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/cascadeandhog/cascades/haarcascade_frontalface_alt2.xml
+END
+lbpcascade_frontalface.xml
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/cascadeandhog/cascades/lbpcascade_frontalface.xml
+END
+lbpcascade_frontalface_alt3.xml
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/cascadeandhog/cascades/lbpcascade_frontalface_alt3.xml
+END
+haarcascade_1.xml
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/cascadeandhog/cascades/haarcascade_1.xml
+END

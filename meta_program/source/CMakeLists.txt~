@@ -1,0 +1,33 @@
+cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+
+project(vision_system)
+
+#find_package(PCL 1.5 REQUIRED)
+
+#include_directories(${PCL_INCLUDE_DIRS})
+#link_directories(${PCL_LIBRARY_DIRS})
+#add_definitions(${PCL_DEFINITIONS})
+
+find_package(OpenCV REQUIRED)
+#find_package(Boost REQUIRED)
+
+#include_directories(${Boost_INCLUDE_DIRS})
+#link_directories(${Boost_LIBRARY_DIRS})
+#add_definitions(${Boost_DEFINITIONS})
+
+#add_executable (vision_system vision_system.cpp)
+#target_link_libraries (vision_system ${OpenCV_LIBS})
+
+#target_link_libraries (vision_system ${Boost_LIBS})
+#target_link_libraries (vision_system ${PCL_LIBRARIES})
+
+SET(CMAKE_CXX_FLAGS -lboost_thread-mt)
+
+add_executable (RegionFinding RegionFinding.cpp)
+target_link_libraries (RegionFinding ${OpenCV_LIBS})
+
+target_link_libraries (RegionFinding ${Boost_LIBS})
+
+add_executable (ObjRec ObjRec.cpp)
+target_link_libraries (ObjRec ${OpenCV_LIBS})
+

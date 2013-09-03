@@ -1,0 +1,49 @@
+Data needed for each step
+
+Region Finding: (Right now done only by region seeding but might be a way to do it over multiple frames or at least overlap the two images)
+In:
+Image (from VideoCapture)
+Out:
+Vector of ROIs of large color regions
+
+MMD (Matching between Simulation and Real world)
+In:
+Simulation (from PhysX)
+Image (from VideoCapture)
+Out:
+Mask of where the major differences area (could be initialized to 0 for first capture)
+
+ROIChooser (chooses which roi to send to objectMatching)  Maybe pick largest match that isn't covered by mask?  (Could be handled / overwritten by SOAR too)
+	- could also be used as a buffer to store ROIs and filter out new information if still processing 
+In:
+Vector of ROIs of large color region
+Mask of Differences
+Out:
+ROI of image to be matched
+
+ObjectMatching: (Done by finding which image in the database and the most corrisponding keypints) 
+In:
+ROI of image to be matched (from ROIChooser)
+Out:
+Object Name
+
+PoseFinding / Registration of Object: Find obj in other frame (can use area / position knowledge to figure out where the corrisponding image is then 
+		use find matching points between them (we could just use keypoints and use the matcher) and use those points to find distance from camera
+		then apply those points to 3d object to find position.  
+		Wish I could just get the orientation info from keypoints from both and then through the difference of orientation find the distance from camera
+		and just use one of the orientation (from dominate camera) to place into simulation  
+In:
+Object Name   (from ObjectMatching)
+Vector of ROIs of large color regions (from both)
+ROI of image matched
+Original images from both cameras
+Out:
+Position of Object in simulation
+
+PhysX:
+In:
+Object Name  (from ObjectMatching)
+Position of Object  (from PoseFinding)
+Out:
+Simulation
+

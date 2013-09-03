@@ -1,0 +1,76 @@
+10
+
+dir
+7292
+https://code.ros.org/svn/opencv/branches/2.3/opencv_extra/testdata/cv
+https://code.ros.org/svn/opencv
+
+
+
+2011-08-10T07:04:08.506244Z
+6396
+mdim
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+73c94f0f-984f-4a5f-82bc-2d8db8d8ee08
+
+snakes
+dir
+
+watershed
+dir
+
+grabcut
+dir
+
+optflow
+dir
+
+detectors
+dir
+
+fast
+dir
+
+cameracalibration
+dir
+
+stereo
+dir
+
+inpaint
+dir
+
+features2d
+dir
+
+detectors_descriptors_evaluation
+dir
+
+cascadeandhog
+dir
+
+shared
+dir
+
+mser
+dir
+
+latentsvmdetector
+dir
+
+stereomatching
+dir
+

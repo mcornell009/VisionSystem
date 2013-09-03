@@ -1,0 +1,235 @@
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/core/core.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/contrib/contrib.hpp"
+
+//#include "../externals/boost_1_50_0/boost/thread.hpp"
+#include <boost/thread.hpp>
+#include <iostream>
+#include <stdio.h>
+
+
+using namespace cv;
+using namespace std;
+
+
+class RegionFinding
+{
+private:
+    int spatialRad, colorRad, maxPyrLevel, thresh, minArea;
+    
+public:
+    vector<Rect> regions;
+    vector<Mat> masks;
+    RegionFinding();
+    void findRegions(Mat img);
+};
+
+RegionFinding::RegionFinding()
+{
+    spatialRad = 4;
+    colorRad = 20;
+    maxPyrLevel = 1;
+    thresh = 100;
+    minArea = 400;
+}
+
+
+void RegionFinding::findRegions(Mat img)
+{
+//    TickMeter tm;
+//    tm.start();
+   
+    CV_Assert( !img.empty() );
+    RNG rng = theRNG();
+    
+    Mat img_canny, mask, maskPrev, blur;
+    Rect regionRoi;
+    regions.clear();
+    masks.clear();
+    
+    pyrMeanShiftFiltering( img, img, spatialRad, colorRad, maxPyrLevel );
+    
+    //cvtColor( blur, mask, CV_BGR2GRAY );
+    
+    Canny( img, mask, thresh, 2*thresh, 3 );
+    
+    copyMakeBorder( mask, mask, 1, 1, 1, 1, BORDER_REPLICATE, 1 );
+    
+    const Scalar colorDiff=Scalar::all(2);
+    mask.copyTo(maskPrev);    
+    
+//    bool masks2 = true;
+//    cout << "Non-Zero Elemets in Original: " << countNonZero(mask) << endl;
+    
+
+    
+    for( int y = 0; y < img.rows; y++ )
+    {
+        for( int x = 0; x < img.cols; x++ )
+        {
+            if( mask.at<uchar>(y+1, x+1) == 0 )
+            {
+                Scalar newVal( rng(256), rng(256), rng(256) );
+                 
+                floodFill( img, mask, Point(x,y), newVal, &regionRoi, colorDiff, colorDiff, 4);//FLOODFILL_MASK_ONLY +    
+                               
+                if ((regionRoi.height * regionRoi.width > minArea))
+                {   
+                    Mat imgDiff = mask != maskPrev;
+                    Mat regionImg;
+                    img.copyTo(regionImg, imgDiff( Rect(1,1,mask.cols-2,mask.rows-2) ) );
+                    /*
+                    bool masks1 = true;
+                    cout << "old mask: " << countNonZero(maskPrev) << " new mask: " << countNonZero(mask) << " with a difference of " << 
+                    countNonZero(mask) - countNonZero(maskPrev) << " and the diff mask has " << countNonZero(imgDiff) << endl;
+                    
+                    while(masks1 && masks2)
+                    {
+                        Mat temp;
+                        img.copyTo(temp, imgDiff( Rect(1,1,mask.cols-2,mask.rows-2) ) );
+                        imshow("Masked Data", temp);
+                        switch ( (char)waitKey(10) )
+                        {
+                        case 'q':
+                            masks1 = false;
+                            break;
+                        case 'w':
+                            masks2 = false;
+                            break;
+                        }
+                    }         
+                    */
+                    
+                    regions.push_back(regionRoi);
+                    masks.push_back(regionImg);
+                }
+                mask.copyTo(maskPrev);
+
+            }
+        }
+    }
+     // cout << regions.size() << endl;
+//    tm.stop();
+    //cout << "RF in " << tm.getTimeMilli() << " ms" << endl;
+}
+//*/
+int main(int argc, char** argv)
+{
+    RegionFinding RF;
+    String LwinName = "left", RwinName = "Right";
+    bool running = true, ROIexaminer = false;
+    Mat left, right, original;
+    
+    VideoCapture camera0 = VideoCapture(0); 
+    VideoCapture camera1 = VideoCapture(1);
+    
+    if(!camera0.isOpened() && !camera1.isOpened()) // check if we succeeded
+    {
+	cout << "Cameras are not attached" << endl;
+        return -1;
+    }
+
+    namedWindow( LwinName, CV_WINDOW_AUTOSIZE );
+    namedWindow( RwinName, CV_WINDOW_AUTOSIZE );
+    
+    moveWindow(LwinName, 0, 0);
+    moveWindow(RwinName, 640, 0);
+    
+    vector<Rect> L_ROIs, R_ROIs;
+    vector<Mat> L_ROIMasks, R_ROIMasks;    
+    vector<Rect>::iterator Regioniter;
+    vector<Mat>::iterator Imageiter;
+    while(running)
+    {
+        TickMeter tm;
+        tm.start();
+        camera0>>left;
+        camera1>>right;
+        left.copyTo(original);
+        
+        
+        boost::thread L_RF(boost::bind(&RegionFinding::findRegions, &RF, left));
+        //L_ROIs = RF.regions;
+        //L_ROIMasks = RF.masks;
+        boost::thread R_RF(boost::bind(&RegionFinding::findRegions, &RF, right));
+        //R_ROIs = RF.regions;
+        //R_ROIMasks = RF.masks;
+        //L_RF.join();
+        //R_RF.join();
+        //RF.findRegions( left );
+	//RF.findRegions( right );
+        imshow(LwinName, left);
+        imshow(RwinName, right);
+
+        while(ROIexaminer)
+        {
+	    RNG rng = theRNG();
+            Regioniter = L_ROIs.begin();
+            Imageiter = L_ROIMasks.begin();
+            cout << "ROI Examiner with ROI: " << L_ROIs.size() << endl;
+            cout << "Region Values (x,y,row,cols): " << Regioniter->x << "\t\t" << Regioniter->y << "\t\t" << Regioniter->height << "\t\t" << Regioniter->width << endl;
+            //just to show first ROI
+            Mat temp;
+            imshow("ROI", *Imageiter);
+            original.copyTo(temp);
+            
+            rectangle( temp, Point(Regioniter->x,Regioniter->y), Point(Regioniter->x + Regioniter->width, Regioniter->y + Regioniter->height), Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) ), 2, 8, 0 );
+            imshow( "Original", temp );
+            moveWindow("Original", 40,40);
+            moveWindow("ROI",700,40);
+            
+            string filename;
+            for ( ; Regioniter+1 < L_ROIs.end() ; )
+            {
+                Mat ROI;
+                switch ( (char)waitKey(10) )
+                {
+                case 27:
+                    Regioniter = L_ROIs.end();
+                    running = false;
+                    break;
+                case 'q':  case 'Q':
+                    Regioniter = L_ROIs.end();
+                    ROIexaminer = false;
+                    destroyWindow("Original");
+                    destroyWindow("ROI");
+                    break;
+                case 'i': case 'I':
+                    Regioniter++;
+                    Imageiter++;
+                    original.copyTo(temp);
+                    cout << "Region Values (x,y,row,cols): " << Regioniter->x << "\t\t" << Regioniter->y << "\t\t" << Regioniter->height << "\t\t" << Regioniter->width << endl;
+                    rectangle( temp, Point(Regioniter->x,Regioniter->y), Point(Regioniter->x + Regioniter->width, Regioniter->y + Regioniter->height), Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) ), 2, 8, 0 );
+                    imshow( "Original", temp );
+                    original.copyTo(ROI, *Imageiter);
+                    imshow("ROI", ROI);
+                    break;
+                
+	        case 's': case 'S':
+	            cout << "Name of New file: " << endl;
+	            cin >> filename;
+	            original.copyTo(temp, *Imageiter);
+	            filename = "./data/imageDatabase/" + filename + ".png"; 
+		    if (imwrite( filename, original(*Regioniter)) ) cout << "File: \"" << filename << "\" is saved!" << endl;
+		    else cout << "File Save Error" << endl;
+		    break;
+                    }
+            }
+        }
+        
+        switch ( (char)waitKey(50) )
+        {
+        case 27: case 'q':  case 'Q':
+            running = false;
+            break;
+        case 'r': case'R':
+            ROIexaminer ? ROIexaminer = false : ROIexaminer = true;
+            break;
+        }
+
+    tm.stop();
+    cout << "RF loop in " << tm.getTimeMilli() << " ms" << endl; 
+    }   
+}
+//*/

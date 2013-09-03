@@ -1,0 +1,77 @@
+10
+
+dir
+7292
+https://code.ros.org/svn/opencv/branches/2.3/opencv_extra/testdata/cv/detectors_descriptors_evaluation
+https://code.ros.org/svn/opencv
+
+
+
+2010-10-05T09:11:42.418053Z
+3711
+mdim
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+73c94f0f-984f-4a5f-82bc-2d8db8d8ee08
+
+descriptors
+dir
+
+one_way_train_images
+dir
+
+evaluation_test_description.txt
+file
+
+
+
+
+2012-03-05T02:16:23.237665Z
+0e346d20d083c9f55593be6312489313
+2010-10-05T09:11:42.418053Z
+3711
+mdim
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+8206
+
+detectors
+dir
+
+images_datasets
+dir
+
+keypoints_datasets
+dir
+

@@ -1,0 +1,7 @@
+/home/robotlab/vision_system/OpenCVExamples/ObjectRec/build/CMakeFiles/descriptor_extractor_matcher.dir
+/home/robotlab/vision_system/OpenCVExamples/ObjectRec/build/CMakeFiles/detection_based_tracker_sample.dir
+/home/robotlab/vision_system/OpenCVExamples/ObjectRec/build/CMakeFiles/detector_descriptor_evaluation.dir
+/home/robotlab/vision_system/OpenCVExamples/ObjectRec/build/CMakeFiles/detector_descriptor_matcher_evaluation.dir
+/home/robotlab/vision_system/OpenCVExamples/ObjectRec/build/CMakeFiles/generic_descriptor_match.dir
+/home/robotlab/vision_system/OpenCVExamples/ObjectRec/build/CMakeFiles/matching_to_many_images.dir
+/home/robotlab/vision_system/OpenCVExamples/ObjectRec/build/CMakeFiles/peopledetect.dir

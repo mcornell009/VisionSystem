@@ -1,0 +1,90 @@
+Breakdown of System:
+
+Part One: Shape finding
+Definitions:
+	Shapes:  Different Sides / parts of objects that are seen.  
+
+Reasons:
+	Need to break up the image to find the different shapes in the field of view.  These shapes need to be found quickly / efficiently since it would be useful to do it to each image to enable it to match up to motion flow and MMD.  The larger the shapes found the easier the matchup is however the less accurate the convex hulls will be and visa versa for smaller shapes.  
+	
+Requirements:
+	These shapes need to be able to be identified.  We need to be confient that the shapes are identified the same way (such as maybe name them from left to right then left to right.  
+
+
+Different function to look into:
+Finding the Shapes:  
+	Finding Lines / borders of shapes:
+		Find contour:
+		http://opencv.itseez.com/modules/imgproc/doc/structural_analysis_and_shape_descriptors.html?highlight=contour#findcontours
+		http://opencv.itseez.com/doc/tutorials/imgproc/shapedescriptors/find_contours/find_contours.html#find-contours
+		
+		Convex Hull:
+		http://opencv.itseez.com/doc/tutorials/imgproc/shapedescriptors/hull/hull.html#hull
+		http://opencv.itseez.com/doc/tutorials/imgproc/shapedescriptors/moments/moments.html#moments
+		
+		Back Projecting:
+		http://opencv.itseez.com/doc/tutorials/imgproc/histograms/back_projection/back_projection.html#back-projection
+		
+	Find Pose of Shape:
+		Orientation Finding - discreate fourier Transformation:
+		http://opencv.itseez.com/doc/tutorials/core/discrete_fourier_transform/discrete_fourier_transform.html?highlight=fitting
+		
+Matching the shapes:
+	Finding a template in a full picture
+		Template Matching:
+		(would need modification since ineffienct)
+		http://opencv.itseez.com/doc/tutorials/imgproc/histograms/template_matching/template_matching.html#template-matching
+		
+	
+
+
+Creating Convex hulls from shapes:
+
+	
+Future Ideas on how to improve system:
+
+Could we use spacial reasoning and basic disparity information instead of just disparity information.  The spacial reasoning, once the rules are found, should be faster then constantly computing the disparity of every state.  The first step will be to make the disparity system using shapes work, then the rules can be defined based off that information.  The entire shape would need to be known to have it work since then we can figure out the placement of that object (such as knowing what a person looks like and if half there body is behind something then we can assume that the rest is behind the other object.  This would also need strong object recognition to know where each object is.   
+
+The partition command might be able to link different clusters together which are similar objects but might be able to create a rule for soar to link together different objects.  
+http://opencv.itseez.com/modules/core/doc/clustering.html?highlight=kmeans#partition
+
+
+Original Email:
+
+Project Update:
+I've been working on the new disparity program and I've have been trying to solve the problem of the disparity output not working.  This was the problem I was facing last week and I'm still not sure why it isn't working the same as the other program since I have identical parameters going into the disparity function in both programs.  If I have to, I'll just use the old code but for now I'm going to keep working on it but at the same time I've been working on a few other things as well.  
+
+I've reduced the time it takes to convert between the openCV and PCL datatype.  Before it was iterating though every point three times and I reduced that to only one time which is a major time savor.  It also allows me to do some preliminary filtering of the data while it is being converted which reduces down the time even further.  I've also created the 3d visualizer so I don't have to open the final point cloud in another program.  
+
+Even if I got the disparity to work on the new code, I am still worried about the blank space in the disparity.  I'm going to test out my theory this week (on the old code) of having multiple calibrations for different sized captures so we can just do an ROI of a specific region to see if I can get a better result (with less 'holes' in the disparity image) but I am wondering if there is a better way to do it.  I have been thinking about the convex hull idea that you had and maybe it wouldn't be necessary to do an entire disparity mat for each frame or ROI.  If we could just get enough data for the convex hull and then compare using the MMD for specific details that would be sufficient for some parts. 
+
+Project in General:
+
+I had some later thoughts after writing it and reading and thinking it over so I just put (later thought) in front of those sentences.
+
+I have been thinking about an algorithm to do this which might be better at finding the sufficient data and just wondering what you think of it and if I should pursue it this way.  The first four steps are for the disparity and the color segmentation and after I talk about how to integrate in the optical flow and a few other features.  (later thought) The more I wrote this the more I realized that this is still very close to what you have written in your papers (especially the later steps) but I'm still very curious what you think of it.
+
+The first step would be to find large shapes in the image, for example just the frame of the door and the corners of the walls.  We could use something like line finding or just color segmentation but there was also a program for finding contours already in OpenCV which I was using during the ball finding which should work well. There is also a convex hull function I haven't played around with that might work as well.  We could also find corners between shapes here which would help when turning the shapes into objects.  I am thinking that each shape would be a surface of an object, such as the front of a computer.  The front and side of a computer would be different shapes for that example.  These shapes could be blobs but I think it would be easier if they conformed to having straight or curved edges.  I think the MMD could handle smaller changes later on.
+
+The second step would be finding correspondences of shapes instead of individual points which we are using now.  This should be faster then doing the disparity mats since we are only doing shapes but we can also just do disparity mats on the particular shapes that have a lot of features such as faces.  I think it would be better to leave it up to the MMD but if not we could use the relationship of the shapes (such as if there are a lot of shapes together) to find the where it is necessary to do the disparity mats.   One example is faces that would have a lot of shapes together where as a wall would only have a small number though we could play around with the parameters of the shape finder to see what way is best. I am thinking that doing the disparity of certain shapes in the this step is be unnecessary since the MMD would be able to see that if an object like a face wasn't the same as what the convex hull made then it could trigger the a disparity mat for the particular area (which I think you wanted to do).  I think it would be better to leave it up to the MMD but I just wanted to throw the disparity mat for complex shapes out there to see if you wanted to do it.    
+ 
+The third step would be to get the pose and distance of each shape to the camera and then create objects to represent them from the correspondences and the shapes.  The tricky part here will be finding how those objects are connected / segmented and which PhysX / glut objects to represent it with; however, we would need to figure that out eventually no matter how we found the 3d data.  This is also where the object recognition would come into play as well.  We could use object recognition on the shapes using keypoints to see if we already have the objects 3d data which in my mind would lead to three possible cases (below this paragraph).  This would be similar to the saccadic movements because we are recognizing only the shapes and not entire images.  To make it even more like saccadic eye movements we would have to create a different type of recognition which works on the edges of shapes and recognizes objects.  (Later thought) we could do something inbetween where we do an initial estimate of the images to see what the shape looks like though a generalized object recognition and if it looks like a face (soar can decide that) then we would know which keypoints to look for (say eyes and mouth) and only have a few in the hair which would be similar to the saccadic eye movements. This is also where if the MMD has already seen the object and it matches then it can just skip this step.  So the object recognition would just find that it is a face and SOAR would either apply it's own keypoint finder (based on where saccadic eye movements look) for the face or whatever objects we think are that important enough to have this second level of recognition.  This might also work for character recognition and that would be so cool. 
+
+Cases depending on strength of recognition:
+Case '1': If there is a strong recognition of the object then we could just add in that object's 3d information from memory.  
+Case '2': If there is a weak recognition we can create a more generalize object which connects both together (such as looking at the same object from different points of view) and create a more accurate version of that object.  To create a more accurate version of the object it would also need to be able to integrate the disparity mat for complex objects such as faces which the convex hull would probably not model well enough.  An example would be a face which is not recognized to a specific person but is definitely a face.  This case might also be useful if an object needs of be used (such as picking up a glass) and there needs to be a finer 3d object for that particular object and SOAR could just call this when it is needed and SOAR could be called by this when there is an uncertainty such as if there are conflicting elements of the object (such as if they are actually just objects that look similar). 
+Case '3': If the object is not recognized at all, then we would have to build a new 3d object from scratch.  I've been thinking how to do this and I was wondering if we could do it by using corners which connect the shapes together to figure out which shapes are part of the same object.  For this part I will need to do more research into what has been done and the different object shapes that can be created in PhysX (since we only used spheres and boxes before. I was thinking of first assuming that the object is either a box or a sphere or figure out another way to create a complex object by adding the connecting shapes together and have a shape creator which fits the smallest amount of physX objects (linked together) into the perceived complex object.  The second way seems harder but probably better in the end.  The adding the boxes in is an NP-Complete problem but I think a greedy algorithm would work well enough.  Once the physX object is created, then we could map on the shapes as textures onto the glut shell.  
+
+The forth step is integrating in the objects into the physX world.  The first grab wouldn't be hard since there doesn't need to be registration, but after that, we would have to integrate it into the already perceived world.  The registration could be done though find correspondences between the major shapes, such as walls or a desk, and finding an affine transformation matrix.  This is one of the major advantages of using the convex hull early on even if they are already in the virtual world since it is very hard to register a small, complex object like a face, which I found out first hand early on.  The way PCL does initial registration is though feature estimation of keypoints for the initial estimate but since the disparity mat we are getting don't seem to have sufficiently identifiable features on the keypoints found, this doesn't work too well.  Not even the ICP worked before but I think it will work better with the convex hulls for the matching the big shapes.   The objects that are not different according the MMD are discarded after registration (this might mean running the MMD again on the point cloud vs. virtual world or marking during the initial creation of shapes which shapes are not different.  Then the objects that are different are changed or new ones are added in or integerated into the PhysX world.  
+
+
+In the third step I could add in the motion flow data.  I am thinking that in step three, matching the shapes to the motion flow would be the easiest way to match up movement to the shape that is defining it and would help with object segmentation since if one shape is moving and another is not then they can't be connected but I think SOAR would be needed to help match up these objects so it might have to be a disconnected part of the algorithm since it wouldn't have to know the motion to progress with the next step, it would just make it more accurate.  I would like to talk to you further about this part and where you think it would be best to fit into everything else.  I still need to rework the code to conform to new openCV datatype but I've seen samples in the openCV library so hopefully won't be too hard.
+
+I was also thinking about an experience I had walking in my apartment.  I noticed that a wall was much farther at one point then it should be and it took me a few seconds to realize that it was a mirror reflecting the wall opposite it.  I was thinking this type of inconsistency might be integrated into the virtual world but then alert SOAR to investigate it further.  Once SOAR knows about this exception, then it shouldn't take as long the next time to figure out why the exception is happening and how to correct it.  This would be part of making perception a cognitive activity rather then just direct processing.  This would also be a way of avoiding intense filtering by just allowing it to pass and alerting SOAR.   
+
+There still is the issue with the disparity mat for the finer refinement having holes but I think we can use fitting to focus on the object in question in the disparity mat and then rely on the original object created by the convex hull as a fall back.  Then if that isn't good enough the MMD would do the disparity again and hopefully the lighting would be better.  There also might be a need to put a light on the robot so that it can have better lighting in a particular spot if the room's lighting isn't good enough (though I would get annoyed if the robot kept shinning it in our eyes).  This brings up another question of how the lighting in the virtual world would look.  If a light source is strong enough, such as the sun through a window, then we might have to create a light in the virtual world as well to help make the virtual world more accurate so the MMD doesn't have as many false positives but that can be done as an afterthought.  This is a feature that could be implemented by SOAR when it determines that a light source is affecting the perception too much.  
+
+Sorry for writing such a long email, I meant this to be a quick update at first.  Writing it actually helped me organize how I think of the project and hopefully will help convey my thoughts on what I think needs to be done.  Do you think this might be a good way to go about it and is this how you thought about the saccadic eye movements would be integrated into the system and did I forget about any major parts?
+
+Talk to you later and sorry again for the long email,
+

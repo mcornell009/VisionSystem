@@ -1,0 +1,1 @@
+/usr/bin/c++   -lphidget21   CMakeFiles/facedetect_servo.dir/facedetect_servo.cpp.o  -o facedetect_servo -rdynamic 

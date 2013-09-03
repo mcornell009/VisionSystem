@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/snakes
+END
+ring.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/snakes/ring.bmp
+END
+ring.txt
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/snakes/ring.txt
+END
+square.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/snakes/square.bmp
+END
+square.txt
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/snakes/square.txt
+END

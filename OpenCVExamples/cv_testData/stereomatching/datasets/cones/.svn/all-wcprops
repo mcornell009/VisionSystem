@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/stereomatching/datasets/cones
+END
+disp2.png
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/stereomatching/datasets/cones/disp2.png
+END
+disp6.png
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/stereomatching/datasets/cones/disp6.png
+END
+im2.png
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/stereomatching/datasets/cones/im2.png
+END
+im6.png
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/stereomatching/datasets/cones/im6.png
+END

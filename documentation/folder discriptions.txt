@@ -1,0 +1,7 @@
+Current folders:  Disparity Comparison, OpenCV Examples, JSEG;
+
+Disparity Comparison:  A program for comparing the different disparities by disparity mat and by visualization in pcl either by mesh or by point cloud
+
+OpenCV Examples:  A test bed for examples from openCV to test out different functions
+
+JSEG is a segmentation algorithm from http://vision.ece.ucsb.edu/segmentation/jseg/ but seems to only work for one image at a time and is kinda slow.  

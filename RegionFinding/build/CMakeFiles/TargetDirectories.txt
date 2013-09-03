@@ -1,0 +1,2 @@
+/home/robotlab/vision_system/RegionFinding/build/CMakeFiles/RegionFindingLive.dir
+/home/robotlab/vision_system/RegionFinding/build/CMakeFiles/RegionFindingSingle.dir

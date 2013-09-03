@@ -1,0 +1,2 @@
+/home/robotlab/vision_system/FollowThatObj/stereomatch_servo/bin/CMakeFiles/facedetect_camera.dir
+/home/robotlab/vision_system/FollowThatObj/stereomatch_servo/bin/CMakeFiles/facedetect_servo.dir

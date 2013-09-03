@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/detectors_descriptors_evaluation/descriptors
+END
+Calonder_res.xml
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/detectors_descriptors_evaluation/descriptors/Calonder_res.xml
+END
+SURF_params.xml
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/detectors_descriptors_evaluation/descriptors/SURF_params.xml
+END
+FERN_res.xml
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/detectors_descriptors_evaluation/descriptors/FERN_res.xml
+END
+SIFT_params.xml
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/detectors_descriptors_evaluation/descriptors/SIFT_params.xml
+END
+SURF_res.xml
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/detectors_descriptors_evaluation/descriptors/SURF_res.xml
+END
+Calonder_params.xml
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/detectors_descriptors_evaluation/descriptors/Calonder_params.xml
+END
+FERN_params.xml
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/detectors_descriptors_evaluation/descriptors/FERN_params.xml
+END
+SIFT_res.xml
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/opencv/!svn/ver/6456/branches/2.3/opencv_extra/testdata/cv/detectors_descriptors_evaluation/descriptors/SIFT_res.xml
+END

@@ -1,0 +1,38 @@
+%YAML:1.0
+detector:
+   name: "Feature2D.SURF"
+   extended: 1
+   hessianThreshold: 100.
+   nOctaveLayers: 2
+   nOctaves: 4
+   upright: 0
+descriptor:
+   name: "Feature2D.SURF"
+   extended: 1
+   hessianThreshold: 100.
+   nOctaveLayers: 2
+   nOctaves: 4
+   upright: 0
+matcher:
+   indexParams:
+      -
+         name: algorithm
+         type: 23
+         value: 1
+      -
+         name: trees
+         type: 4
+         value: 4
+   searchParams:
+      -
+         name: checks
+         type: 4
+         value: 32
+      -
+         name: eps
+         type: 5
+         value: 0.
+      -
+         name: sorted
+         type: 15
+         value: 1
